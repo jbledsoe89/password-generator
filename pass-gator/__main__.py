@@ -1,4 +1,3 @@
-
 # Useful Resources:
 # https://realpython.com/python-f-strings/
 # https://docs.python.org/3/library/argparse.html
@@ -84,28 +83,33 @@ def generate_password(length: int, characters: str, exclude_similar: bool, exclu
     
     return password
 
-# Color text based on yellow for uppercase, blue for lowercase, green for numbers, and bright white symbols.
-
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     
+    # Sub-Commands
+    subparsers = parser.add_subparsers(dest='command')
+    subparsers.required = True
+    
+    # Subparser for creating passwords with the keyword 'word'
+    word_parser = subparsers.add_parser('word', help='Generate password.')
+    
     # Argument which allows the user to generate multiple passwords to choose from.
-    parser.add_argument('-n', '--number', type=int, default=1, help='number of passwords to generate')
+    word_parser.add_argument('-n', '--number', type=int, default=1, help='number of passwords to generate')
 
     # Argument which allows the user to choose different lengths (4-300 characters).
-    parser.add_argument('-l', '--length', type=pass_length, default=4, help='length of the password (4-300 characters, default: %(default)s)')
+    word_parser.add_argument('-l', '--length', type=pass_length, default=4, help='length of the password (4-300 characters, default: %(default)s)')
     
     # Argument which allows the user to select different types of characters (symbols, numbers, lower case, upper case).
-    parser.add_argument('-c', '--characters', type=character_options, default='snlu', help='characters to use in the password ([s]ymbols, [n]umbers, [l]owercase, [u]ppercase, [s]ymbols, default: %(default)s)')
+    word_parser.add_argument('-c', '--characters', type=character_options, default='snlu', help='characters to use in the password ([s]ymbols, [n]umbers, [l]owercase, [u]ppercase, [s]ymbols, default: %(default)s)')
     
     # Argument to exclude similar characters (such as i, l, L, 1, and !).
-    parser.add_argument('-x', '--similar', action='store_true', help='exclude similar characters (i, l, L, 1, and !)')
+    word_parser.add_argument('-x', '--similar', action='store_true', help='exclude similar characters (i, l, L, 1, and !)')
     
     # Argument to exclude ambiguous characters (such as {}[]()/\'"!,;:>,.).
-    parser.add_argument('-a', '--ambiguous', action='store_true', help='exclude ambiguous characters ({}[]()/\'"!,;:>,.)')
+    word_parser.add_argument('-a', '--ambiguous', action='store_true', help='exclude ambiguous characters ({}[]()/\'"!,;:>,.)')
     
     # Argument to ensure the first character is a letter.
-    parser.add_argument('-f', '--letter', action='store_true', help='ensure the first character is a letter')      
+    word_parser.add_argument('-f', '--letter', action='store_true', help='ensure the first character is a letter')      
     
     # If the user does not provide any arguments, print the help message.
     if len(sys.argv) == 1:
@@ -146,4 +150,4 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         
 # Main Code
 if __name__ == '__main__':
-    sys.exit(main())
+    exit(main())
