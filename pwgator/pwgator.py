@@ -170,7 +170,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
  This ASCII pic can be found at: https://asciiart.website/index.php?art=animals/reptiles/aligators
  Text ASCII Credits: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=pw%20gator
 =------------------------------------------------------------------------------="""
-    # Check to see if colorama is installed.
+    # Check to see if colorama is installed..
     try:
         import colorama
         from colorama import Fore, Style
