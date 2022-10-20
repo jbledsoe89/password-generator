@@ -168,7 +168,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 =------------------------------------------------------------------------------=
  This ASCII pic can be found at: https://asciiart.website/index.php?art=animals/reptiles/aligators
- Text Credits: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=pw%20gator
+ Text ASCII Credits: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=pw%20gator
 =------------------------------------------------------------------------------=""")
     
     # If the user enters word command
