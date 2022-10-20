@@ -145,7 +145,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     args = parser.parse_args(argv)
     
-    print("""
+    banner = """
 =------------------------------------------------------------------------------=   
                                       __            
         ____ _      __   ____ _____ _/ /_____  _____
@@ -169,42 +169,52 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 =------------------------------------------------------------------------------=
  This ASCII pic can be found at: https://asciiart.website/index.php?art=animals/reptiles/aligators
  Text ASCII Credits: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=pw%20gator
-=------------------------------------------------------------------------------=""")
-    
+=------------------------------------------------------------------------------="""
+    # Check to see if colorama is installed.
+    try:
+        import colorama
+        from colorama import Fore, Style
+        colorama.init()
+            
+        # Color text based on yellow for uppercase, blue for lowercase, green for numbers, and magenta symbols.
+        def parse_text(text: str) -> str:
+            colorized_text = ''
+            for char in text:
+                if char.isupper():
+                    colorized_text += Fore.YELLOW + Style.BRIGHT + char + Style.RESET_ALL
+                elif char.islower():
+                    colorized_text += Fore.BLUE + Style.BRIGHT + char + Style.RESET_ALL
+                elif char.isdigit():
+                    colorized_text += Fore.GREEN + Style.BRIGHT + char + Style.RESET_ALL
+                else:
+                    colorized_text += Fore.MAGENTA + Style.BRIGHT + char + Style.RESET_ALL
+            return colorized_text
+            
+        rgb_Green = Fore.GREEN + Style.BRIGHT
+        rgb_Red = Fore.RED + Style.BRIGHT
+        rgb_Clear = Style.RESET_ALL
+            
+    # Otherwise let's just do vanilla output.
+    except ImportError:
+        
+        def parse_text(text: str) -> str:
+            return text
+        
+        rgb_Green = ''
+        rgb_Red = ''
+        rgb_Clear = ''
+        
     # If the user enters word command
     if args.command == 'word':
- 
+        
         # Generate a password based on number of passwords, length, characters, with options to exclude similar characters, 
         # exclude ambiguous characters, and ensure the first character is a letter.
+        print(banner)
         print("Generating Password(s)..")
         for i in range(args.number):
             password = generate_password(args.length, args.characters, args.similar, args.ambiguous, args.letter)
-        
-            # Check to see if colorama is installed.
-            try:
-                import colorama
-                from colorama import Fore, Style
-                colorama.init()
+            print(parse_text(password))
             
-                # Color text based on yellow for uppercase, blue for lowercase, green for numbers, and magenta symbols.
-                def colorize_text(text: str) -> str:
-                    colorized_text = ''
-                    for char in text:
-                        if char.isupper():
-                            colorized_text += Fore.YELLOW + Style.BRIGHT + char + Style.RESET_ALL
-                        elif char.islower():
-                            colorized_text += Fore.BLUE + Style.BRIGHT + char + Style.RESET_ALL
-                        elif char.isdigit():
-                            colorized_text += Fore.GREEN + Style.BRIGHT + char + Style.RESET_ALL
-                        else:
-                            colorized_text += Fore.MAGENTA + Style.BRIGHT + char + Style.RESET_ALL
-                    return colorized_text
-            
-                print(colorize_text(password))
-            
-            # Otherwise let's just do vanilla output.
-            except ImportError:   
-                print(password)
         print("=------------------------------------------------------------------------------=")
                 
     # If the user enters check command
@@ -221,39 +231,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if args.symbol: count += 1
         if len(password) < count: print("Error: Password is too short for the supplied options.")
         else:
-            # Check to see if colorama is installed.
-            try:
-                import colorama
-                from colorama import Fore, Style
-                colorama.init()
-            
-                # Color text based on yellow for uppercase, blue for lowercase, green for numbers, and magenta symbols.
-                def colorize_text(text: str) -> str:
-                    colorized_text = ''
-                    for char in text:
-                        if char.isupper():
-                            colorized_text += Fore.YELLOW + Style.BRIGHT + char + Style.RESET_ALL
-                        elif char.islower():
-                            colorized_text += Fore.BLUE + Style.BRIGHT + char + Style.RESET_ALL
-                        elif char.isdigit():
-                            colorized_text += Fore.GREEN + Style.BRIGHT + char + Style.RESET_ALL
-                        else:
-                            colorized_text += Fore.MAGENTA + Style.BRIGHT + char + Style.RESET_ALL
-                    return colorized_text
-            
-                rgb_Password = colorize_text(password)
-                rgb_Green = Fore.GREEN + Style.BRIGHT
-                rgb_Red = Fore.RED + Style.BRIGHT
-                rgb_Clear = Style.RESET_ALL
-            
-            # Otherwise let's just do vanilla output.
-            except ImportError:   
-                rgb_Password = password
-                rgb_Green = ''
-                rgb_Red = ''
-                rgb_Clear = ''
-                   
-            print("Password: " + rgb_Password)
+            print(banner)
+            print("Password: " + parse_text(password))
             print("=------------------------------------------------------------------------------=")
                     
             # Establish responses and adjust formatting.
